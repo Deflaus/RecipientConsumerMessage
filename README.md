@@ -1,12 +1,12 @@
 Инструкция по установке проекта:
 -------------------------------
 
-1)Установить docker и docker-compose:
+1) Установить docker и docker-compose:
 docker https://docs.docker.com/engine/install/
 docker-compose https://docs.docker.com/compose/install/;
-2)Клонируем репозиторий с проектом;
-3)Переходим в папку с проектом;
-4)Открываем терминал в данной директории и прописываем команду "docker-compose up --build -d postgres rabbitmq" и затем команду "docker-compose up --build -d api worker".
+2) Клонируем репозиторий с проектом;
+3) Переходим в папку с проектом;
+4) Открываем терминал в данной директории и прописываем команду "docker-compose up --build -d postgres rabbitmq" и затем команду "docker-compose up --build -d api worker".
 
 После этих действий проект готов к работе.
 
