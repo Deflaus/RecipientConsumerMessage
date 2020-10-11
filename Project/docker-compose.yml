@@ -1,0 +1,46 @@
+version: "3"
+services:
+    rabbitmq:
+        restart: on-failure
+        image: rabbitmq:managment
+        ports:
+            - 5672:5672
+        volumes:
+            - ./rabbitmq:/var/lib/rabbitmq
+
+    postgres:
+        restart: on-failure
+        image: postgres:10.6-alpine
+        hostname: postgres
+        ports:
+            - 5432:5432
+        environment:
+            - POSTGRES_PASSWORD=admin
+        volumes:
+            - ./postgresql:/var/lib/postgresql/data
+
+    api:
+        build: api/
+        command: python main.py
+        depends_on:
+            - postgres
+            - rabbitmq
+        ports:
+            - 8080:8080
+        environment:
+            - PG_URL=postgresql://postgres:admin@localhost/postgres
+            - RABBITMQ_URL=amqp://guest:guest@localhost/
+            - RABBITMQ_EXCHANGE=messages
+            - SOURCE_ID=1
+
+    worker:
+        build: worker/
+        command: python main.py
+        depends_on:
+            - postgres
+            - rabbitmq
+        environment:
+            - PG_URL=postgresql://postgres:admin@localhost/postgres
+            - RABBITMQ_URL=amqp://guest:guest@localhost/
+            - RABBITMQ_EXCHANGE=messages
+            - SOURCE_ID=1
